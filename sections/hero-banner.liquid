@@ -1,0 +1,278 @@
+<style>
+  .hero-banner-main {
+    background: #000;
+    margin: 0 0 20px;
+  }
+  .hero-banner-head {
+    font-size: 50px;
+    color: #fff;
+    line-height: 1;
+    text-align: center;
+    margin: 0;
+    text-transform: uppercase;
+    padding: 5px 0;
+  }
+  .hero-banner-subhead {
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
+    font-family: 'Helvetica Neue';
+    font-weight: 400;
+    line-height: 1.29;
+    padding: 6px 35px;
+    display: inline-block;
+    vertical-align: top;
+    background: #0000ff;
+    position: relative;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+  }
+  .hero-banner-subhead:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    border-width: 15px 0px 15px 11px;
+    border-style: solid;
+    border-color: transparent transparent transparent #000;
+  }
+  .hero-banner-subhead:after {
+    border-width: 15px 11px 15px 0;
+    border-style: solid;
+    border-color: transparent #000 transparent transparent;
+    left: auto;
+    right: 0;
+    position: absolute;
+    content: "";
+    top: 0;
+    bottom: 0;
+  }
+  .hero-banner-buttons {
+    text-align: center;
+    margin: 0 0 20px;
+  }
+  .hero-banner-buttons a {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Helvetica Neue';
+    font-weight: 600;
+    line-height: 1;
+    padding: 11px 10px;
+    background: #0000ff;
+    color: #fff;
+    margin: 0 5px;
+    vertical-align: top;
+    display: inline-block;
+    min-width: 150px;
+    text-transform: uppercase;
+  }
+  .hero-banner-child-img {
+    margin: auto;
+    max-width: 1020px;
+  }
+  .hero-banner-child-img img {
+    display: block;
+    max-width: 90vh;
+    margin: 0 auto;
+  }
+  .hero-banner-child-content {
+    padding: 40px 15px 0px;
+    text-align: center;
+  }
+  @media screen and (max-width: 425px) {
+    h1.hero-banner-head {
+      font-size: 41px;
+      line-height: 1.2;
+      padding: 0;
+      margin-bottom: 8px;
+    }
+    h4.hero-banner-subhead {
+      font-size: 14px;
+      line-height: 1;
+      padding: 5px 18px;
+    }
+    .hero-banner-subhead:before {
+      border-width: 12px 0px 12px 8px;
+    }
+    .hero-banner-subhead:after {
+      border-width: 12px 8px 12px 0;
+    }
+    .hero-banner-child-img {
+      max-width: 71.178vw;
+    }
+    .hero-banner-buttons a {
+      font-size: 12px;
+    }
+    .hero-banner-buttons a:not(:last-child):after {
+      border-width: 1px;
+      width: 5px;
+      height: 5px;
+    }
+    .hero-banner-buttons a {
+      font-size: 13px;
+      min-width: 100px;
+      padding: 8px 10px;
+    }
+  }
+</style>
+<div class="hero-banner-main">
+  <div class="hero-banner-child">
+    <div class="hero-banner-child-content">
+      {% if section.settings.subhead %}
+        <h4 class="hero-banner-subhead">{{ section.settings.subhead }}</h4>
+      {% endif %}
+      {% if section.settings.head %}
+        <h1 class="hero-banner-head">{{ section.settings.head }}</h1>
+      {% endif %}
+    </div>
+    {% if section.settings.bgimg %}
+      <div class="hero-banner-child-img">
+        <img width="100%" height="auto" src="{{ section.settings.bgimg | img_url: '' }}" alt="{{ section.settings.bgimg.alt }}">
+      </div>
+    {% endif %}
+    <div class="hero-banner-buttons">
+      {% if section.settings.firstlink %}
+        <a href="{{ section.settings.firstlink }}">{{ section.settings.flinktext }}</a>
+      {% endif %}
+      {% if section.settings.secondlink %}
+        <a href="{{ section.settings.secondlink }}">{{ section.settings.slinktext }}</a>
+      {% endif %}
+    </div>
+    {% if section.settings.show_shipping == true and section.settings.ship_icon != blank or section.settings.ship_text  != blank %}
+    <div class="shipping-text">
+      <a href="{{ section.settings.ship_link }}">
+        {% if section.settings.ship_icon != blank  %}
+        <img src="{{ section.settings.ship_icon | img_url:"medium" }}" loading="lazy">
+        {% endif %}
+        {% if section.settings.ship_text != blank %}
+          {{ section.settings.ship_text }}
+        {% endif %}
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+<style>
+  .shipping-text img {
+    max-width: 60px;
+    margin-right: 10px;
+  }
+  
+  .shipping-text a span b {
+    color: #ffffffff;
+  }
+  
+  .shipping-text a span {
+    color: #6F6F6F;
+  }
+  
+  .shipping-text a {
+    font-family: Oswald,sans-serif!important;
+    font-weight: 400 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .shipping-text {
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    width: 100%;
+    padding: 10px 15px;
+  }
+  
+  .shipping-text a span,.shipping-text a span b {
+    font-weight: 400 !important;
+    font-size: 15px !important;
+  }
+
+  @media screen and (max-width: 575px) {
+     .shipping-text a {
+       flex-direction:column;
+     }
+    .shipping-text img {
+      max-width: 40px;
+      margin-bottom: 8px;
+      margin-right: 0px;
+    }
+    
+    .shipping-text a span, .shipping-text a span b {
+      font-size: 13px !important;
+      text-align: center;
+    }
+    
+    .shipping-text {
+      padding: 15px 15px;
+    }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Hero Banner",
+    "settings": [
+      {
+        "type": "text",
+        "id": "head",
+        "label": "Heading"
+      },
+      {
+        "type": "text",
+        "id": "subhead",
+        "label": "Sub Heading"
+      },
+      {
+        "type": "url",
+        "id": "firstlink",
+        "label": "Add First Link"
+      },
+      {
+        "type": "text",
+        "id": "flinktext",
+        "label": "Add First Link Text"
+      },
+      {
+        "type": "url",
+        "id": "secondlink",
+        "label": "Add Second Link"
+      },
+      {
+        "type": "text",
+        "id": "slinktext",
+        "label": "Add Second Link Text"
+      },
+      {
+        "type": "image_picker",
+        "id": "bgimg",
+        "label": "Image"
+      },
+      {
+        "type":"checkbox",
+        "id":"show_shipping",
+        "label":"Show Shipping"
+      },
+      {
+        "type":"image_picker",
+        "id":"ship_icon",
+        "label":"Shipping Icon"
+      },
+      {
+        "type":"text",
+        "id":"ship_text",
+        "label":"Shipping Text"
+      },
+      {
+        "type":"url",
+        "id":"ship_link",
+        "label":"Shipping Link"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero Banner"
+      }
+    ]
+  }
+{% endschema %}

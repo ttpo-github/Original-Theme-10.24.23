@@ -1,0 +1,96 @@
+<style>
+.repair-header {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+.repair-header .repair-header-text h2 {
+  font-size: 73px;
+  font-family: 'Oswald' !important;
+  line-height: 1;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+.repair-header .repair-header-text .repair-desc {
+  font-size: 18px;
+  font-family: 'Roboto' !important;
+  font-weight: 700;
+  color: #d8d8d8;
+  text-transform: uppercase;
+}
+@media only screen and (max-width: 1360px) {
+  .repair-header .repair-header-text h2 {
+      font-size: 50px;
+  }
+  .repair-header .repair-header-text .repair-desc {
+      font-size: 16px;
+  }
+}
+@media only screen and (max-width: 1199px) {
+  .repair-header .repair-header-text h2 {
+      font-size: 40px;
+      margin-top: 8px;
+  }
+  .repair-header .repair-header-text .repair-desc {
+      font-size: 15px;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .repair-header .repair-header-text h2 {
+      font-size: 35px;
+  }
+  .repair-header .repair-header-text .repair-desc {
+      font-size: 14px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .repair-header .repair-header-text h2 {
+      font-size: 30px;
+  }
+  .repair-header .repair-header-text .repair-desc {
+      font-size: 13px;
+  }
+}
+</style>
+<div class="repair-header" style="background-image:url({{ section.settings.header_img | img_url:"master" }});">
+  <div class="bt-container">
+    <div class="repair-header-text">
+      <h2>{{ section.settings.header_title }}</h2>
+      <div class="repair-desc">
+        {{ section.settings.header_desc }}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Repair Header",
+    "settings": [
+      {
+        "type":"image_picker",
+        "id":"header_img",
+        "label":"Header Image"
+      },
+      {
+        "type":"text",
+        "id":"header_title",
+        "label":"Header Title"
+      },
+      {
+        "type":"richtext",
+        "id":"header_desc",
+        "label":"Header Description"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

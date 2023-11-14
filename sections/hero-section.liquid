@@ -1,0 +1,182 @@
+<div class="inner-hero-section">
+  <div class="inner-hero-slider">
+    {%- for block in section.blocks -%}
+    <div class="inner-hero-item">
+        {% if block.settings.bg_image != blank %}{{ block.settings.bg_image | image_url: width: 2000 | image_tag }}{% endif %}
+        <div class="hero-section-row">
+          {%- if block.settings.image != blank -%}
+          <div class="hero-section-col image_column">
+            <figure>
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt=""/>
+            </figure>
+          </div>
+          {%- endif -%}
+          <div class="hero-section-col content_column" id="hero-{{ block.id }}">
+            {%- if block.settings.sub_heading != blank -%}<h4>{{ block.settings.sub_heading }}</h4>{%- endif -%}
+            {%- if block.settings.title != blank -%}<h2>{{ block.settings.title }}</h2>{%- endif -%}
+            {%- if block.settings.text != blank -%}<p>{{ block.settings.text }}</p>{%- endif -%}
+            {%- if block.settings.button_text1 != blank and block.settings.button_text2 != blank -%}
+            <div class="hero-section-button-wrap">
+              {%- if block.settings.button_text1 != blank -%}<a class="button1" href="{{ block.settings.button_link1 }}" >{{block.settings.button_text1}}</a>{%- endif -%}
+              {%- if block.settings.button_text2 != blank -%}<a class="button2" href="{{ block.settings.button_link2 }}" >{{block.settings.button_text2}}</a>{%- endif -%}
+              <style>
+                {%- if block.settings.background_color1 != blank and block.settings.text_color1 != blank %}
+                  #hero-{{ block.id }} .button1 { 
+                    background: {{ block.settings.background_color1 }};
+                    color: {{ block.settings.text_color1 }}
+                  }
+                {%- endif %}
+                {%- if block.settings.background_hover_color1 != blank and block.settings.text_hover_color1 != blank %}
+                  #hero-{{ block.id }} .button1:hover { 
+                    background: {{ block.settings.background_hover_color1 }};
+                    color: {{ block.settings.text_hover_color1 }}
+                  }
+                {%- endif %}
+                {%- if block.settings.background_color2 != blank and block.settings.text_color2 != blank %}
+                  #hero-{{ block.id }} .button2 { 
+                    background: {{ block.settings.background_color2 }};
+                    color: {{ block.settings.text_color2 }}
+                  }
+                {%- endif %}
+                {%- if block.settings.background_hover_color2 != blank and block.settings.text_hover_color2 != blank %}
+                  #hero-{{ block.id }} .button2:hover { 
+                    background: {{ block.settings.background_hover_color2 }};
+                    color: {{ block.settings.text_hover_color2 }}
+                  }
+                {%- endif %}
+              </style>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+<script>
+  $('.inner-hero-slider').slick({
+    arrows: true,
+    dots: true,
+    slidesToShow: 1,
+    infinite: false
+  });
+</script>
+{% schema %}
+{
+  "name": "Hero Section",
+  "class": "hero-section",
+  "tag" : "section",
+  "settings" : [],
+  "blocks" : [
+	{
+      "type" : "title",
+      "name" : "slider",
+      "settings": [
+        {
+          "type" : "image_picker",
+          "id" : "bg_image",
+          "label" : "Select BG Image"
+        },
+        {
+          "type" : "image_picker",
+          "id" : "image",
+          "label" : "SelectImage"
+        },
+        {
+          "type" : "text",
+          "id" : "sub_heading",
+          "label" : "Add Sub Heading"
+        },
+        {
+          "type" : "text",
+          "id" : "title",
+          "label" : "Add Heading"
+        },
+        {
+          "type" : "textarea",
+          "id" : "text",
+          "label" : "Add Text"
+        },
+        {
+          "type" : "header",
+          "content" : "buttoon Group"
+        },
+        {
+          "type" : "text",
+          "id" : "button_text1",
+          "label" : "Add Button Text"
+        },
+        {
+          "type" : "url",
+          "id" : "button_link1",
+          "label" : "Add Button Link"
+        },
+        {
+          "type" : "color",
+          "id" : "background_color1",
+          "label" : "Add Background Color"
+        },
+        {
+          "type" : "color",
+          "id" : "text_color1",
+          "label" : "Add Text Color"
+        },
+        {
+          "type" : "color",
+          "id" : "background_hover_color1",
+          "label" : "Add Background Hover Color"
+        },
+        {
+          "type" : "color",
+          "id" : "text_hover_color1",
+          "label" : "Add Text Hover Color"
+        },
+        {
+          "type" : "header",
+          "content" : "buttoon Group"
+        },
+        {
+          "type" : "text",
+          "id" : "button_text2",
+          "label" : "Add Button Text"
+        },
+        {
+          "type" : "url",
+          "id" : "button_link2",
+          "label" : "Add Button Text"
+      	},
+        {
+          "type" : "color",
+          "id" : "background_color2",
+          "label" : "Add Background Color"
+        },
+        {
+          "type" : "color",
+          "id" : "text_color2",
+          "label" : "Add Text Color"
+        },
+        {
+          "type" : "color",
+          "id" : "background_hover_color2",
+          "label" : "Add Background Hover Color"
+        },
+        {
+          "type" : "color",
+          "id" : "text_hover_color2",
+          "label" : "Add Text Hover Color"
+        }
+      ]
+    }
+  ],
+  "presets" : [
+  	{ "name" : "hero-section"}
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+ 
+{% endjavascript %}

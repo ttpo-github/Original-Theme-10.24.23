@@ -1,0 +1,57 @@
+<div class="">
+  <div class="bt-container">
+    <div class="meet-team-row">
+      <div>
+        <figure>
+          <img src="{{ section.settings.image | img_url : '605x' }}" />
+        </figure>
+      </div>
+      <div>
+        {% if section.settings.title != blank %}<h2 class="section__title left">{{ section.settings.title }}</h2>{% endif %}
+        {% if section.settings.text != blank %}<p>{{ section.settings.text }}</p>{% endif %}
+        {% if section.settings.subtitle != blank %}<h4>{{ section.settings.subtitle }}</h4>{% endif %}
+      {% if section.settings.Para2 != blank %}<p>{{ section.settings.Para2 }}</p>{% endif %}
+      </div>
+    </div>	
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Meet Team Banner",
+  "class" : "meet-team-content-section section-spacing",
+  "tag" :"section",
+  "settings": [
+	{
+      "type" : "image_picker",
+      "id" : "image",
+      "label" : "Select Image"
+    },
+	{
+      "type" : "text",
+      "id" : "title",
+      "label" : "Add Title"
+    },
+	{
+      "type" : "textarea",
+      "id" : "text",
+      "label" : "Add Paragraph"
+    },
+	{
+      "type" : "text",
+      "id" : "subtitle",
+      "label" : "Add Sub Title"
+    },
+	{
+      "type" : "textarea",
+      "id" : "Para2",
+      "label" : "Add Paragraph"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

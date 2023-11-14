@@ -1,0 +1,213 @@
+<div class="range-wrapper section-spacing">
+	<div class="bt-container">
+		<div class="range-sub">
+			<div class="range-content">
+				<div class="text-box"> {% assign title = section.settings.title | split: '-' %}
+                  <h2 class="section__title"><span>'{{title[0]}}'</span> {{title[1]}}</h2>
+                  {{ section.settings.text }}	
+                  <a href="{{ section.settings.button_link }}" class="custom-btn">{{ section.settings.button_text }}</a>
+				</div>
+				<div class="img-box">
+					<div class="img-wrapper">
+                      {{ section.settings.image | image_url: width: 540 | image_tag: alt: "The Trailer Parts Outlet Team" }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<style>
+.range-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.range-content .text-box{
+    font-size: 16px;
+    line-height: 1.4;
+    font-family: Inter;
+    letter-spacing: 0;
+    color: #000;
+    margin: 0;
+    max-width: 45%;
+    flex: 0 0 45%;
+    padding: 0px 15px;
+    text-align: left;
+}
+.range-content .text-box .section__title span{
+	font-size: 50px;
+}
+.range-content .text-box .section__title{
+	text-align: left;
+	margin-bottom: 25px;
+}
+.range-content .img-box {
+    max-width: 50%;
+    flex: 0 0 50%;
+    padding: 0px 15px;
+}
+.range-content .img-box img {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 0 15px 5px rgab(0, 0, 0, 0.2);
+  height: auto;
+}
+.range-content .img-wrapper {
+    max-width: 580px;
+    position: relative;
+    z-index: 1;
+    margin-left: auto;
+    padding-bottom: 40px;
+    padding-left: 40px;
+}
+.range-content .img-box .img-wrapper:before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  bottom: 0;
+  background-color: #e9e9e9;
+  z-index: 0;
+  border: 7px solid #e9e9e9;
+  box-shadow: 0 0 0 2px #000646 inset;
+  right: 30px;
+  top: 30px;
+}
+.range-tab li {
+    list-style: none;
+    position: relative;
+}
+.range-tab {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    padding-left: 40px;
+    margin-bottom: 20px;
+}
+.range-tab li a {
+    color: #000000;
+    position: relative;
+}
+.range-content .text-box .custom-btn {
+    margin-top: 5px;
+}
+.range-tab li:before {
+    content: '';
+    width: 30%;
+    height: 100%;
+    background-color: #255180;
+    position: absolute;
+    z-index: 0;
+    left: -10px;
+    right: auto;
+    top: auto;
+    bottom: auto;
+    opacity: 0.2;
+    transition: all 0.4s;
+}
+.range-tab li:hover:before{
+	width: 100%;
+}
+@media only screen and (max-width: 991px){
+	.range-content .text-box{
+		font-size: 15px;
+	}
+	.range-sub{
+		text-align: center;
+	}
+	.range-tab{
+		margin-bottom: 30px;
+	}
+	.range-content .text-box {
+	    max-width: 100%;
+	    flex: 0 0 100%;
+	    order: 2;
+	    text-align: center;
+	    padding: 0;
+	}
+	.range-content .img-box {
+	    max-width: 100%;
+	    flex: 0 0 100%;
+	    margin-bottom: 40px;
+	    padding: 0;
+	}
+	.img-wrapper {
+	    margin-right: auto;
+	}
+	.range-content .text-box .section__title {
+	    text-align: center;
+	}
+}
+@media only screen and (max-width: 767px){
+	.range-content .text-box .section__title span {
+		font-size: 48px;
+	}
+}
+@media only screen and (max-width: 575px){
+	.range-content .img-wrapper {
+	    max-width: calc(100% - 20px);
+	    padding-bottom: 20px;
+	    padding-left: 20px;
+	}
+	.range-content .text-box .section__title span {
+	    font-size: 38px;
+	}
+}
+@media only screen and (max-width: 560px){
+	.range-content .text-box{
+		font-size: 14px;
+	}
+	.range-content .img-box .img-wrapper:before {
+	    max-width: calc(100% - 20px);
+	    max-height: calc(100% - 20px);
+	}
+}
+</style>
+
+{% schema %}
+{
+  "name": "Range Section",
+  "settings": [
+	{
+      "type" : "image_picker",
+      "id" : "image",
+      "label" : "Select Image"
+    },
+    {
+      "type" : "text",
+      "id" : "title",
+      "label" : "Add Title",
+      "info" : "Use -(dash) to seperate word Ex: N_Parts"
+    },
+	{
+      "type" : "richtext",
+      "id" : "text",
+      "label" : "Add Text"
+    },
+	{
+      "type" : "text",
+      "id" : "button_text",
+      "label" : "Add Button Text"
+    },
+	{
+      "type" : "url",
+      "id" : "button_link",
+      "label" : "Add Btton Link"
+    }
+  ],
+  "presets":[
+    {
+    	"name": "Range Section"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

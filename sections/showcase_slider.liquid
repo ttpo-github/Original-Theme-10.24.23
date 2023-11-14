@@ -1,0 +1,61 @@
+{% unless section.settings.show_slider == false %}
+<div class="bt-container" >
+<div class="showcase-slider section-spacing">
+  {% for block in section.blocks %}
+    {%- unless block.settings.slide_link == blank -%}<a href="{{ block.settings.slide_link }}">{%- endunless -%}
+      <img class="showcase-slide" src="{{ block.settings.slide_img | img_url:'master' }}" alt=""/>
+    {%- unless block.settings.slide_link == blank -%}</a>{%- endunless -%}
+  {% endfor %}
+</div>
+</div>
+{% endunless %}
+<script>
+  $('.showcase-slider').slick({
+    autoplay: true,
+    arrows: true,
+    dots: false,
+    fade: true
+  });
+</script>
+
+{% schema %}
+  {
+    "name": "Showcase Slider",
+    "settings": [
+		{
+			"type": "checkbox",
+			"id": "show_slider",
+			"label": "Show Showcase Slider?"
+		}
+	],
+	"blocks": [
+		{
+			"type": "slide",
+			"name": "Slide",
+			"settings": [
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Slide Title"
+				},
+				{
+					"type": "image_picker",
+					"id": "slide_img",
+					"label": "Slide Image"
+				},
+				{
+					"type": "url",
+					"id":  "slide_link",
+					"label": "Slide Link"
+				}
+			]
+		}
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

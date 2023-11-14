@@ -1,0 +1,59 @@
+<div class="bt-container custom-collections-list text-center">
+{% for link in linklists[settings.custom_collections].links %}
+  <div class="grid" id="{{link.title | replace: ' ','-' | downcase }}">
+    <div class="grid__item medium-up--one-sixth text-left text-center-sm">
+      <h5 class="collection-title">{{link.title}}</h5>
+       {% unless link.url == "#" %}
+      	<a href="{{link.url}}" target="_blank" class="custom-btn">View more {{link.title}}</a>
+      {% endunless %}
+    </div>
+    <div class="grid__item medium-up--five-sixths">
+      <div class="collection-lists">
+      {% for childlink in link.links %}
+      
+            <div class="item-wrapper">
+
+            {% assign this_collection = childlink.object %}
+              <a {% if link.title != "Shop All Products" %}
+                   href="{{this_collection.url}}"
+                 {% else %}
+                  {% if childlink.title == 'Axle Service Kits' %}
+                    href="#trailer-axle-repair-parts"
+                  {% else %}
+                    href="#{{childlink.title | replace: ' ','-' | downcase }}"
+                  {% endif %}
+                {% endif %}>
+                <div class="img-wrap">
+                	<img src="{{this_collection.image | img_url: '140x'}}" alt="{{this_collection.image.alt}}"/>
+                </div>
+                <p>{{childlink.title}}</p>
+              </a>
+			</div>
+     {% endfor %}
+      </div>
+  </div>
+  </div>
+<hr>
+{% endfor %}
+</div>
+{% javascript %}
+  $(document).on('click', 'a[href^="#"]', function (event) {
+    event.preventDefault();
+
+    $('html, body').animate({
+        scrollTop: $($.attr(this, 'href')).offset().top - jQuery('.header-main').height()
+    }, 1000);
+});
+  
+{% endjavascript %}
+
+{% schema %}
+  {
+    "name": "Custom Collections",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+

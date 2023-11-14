@@ -1,0 +1,124 @@
+<div class="inner-feature-blog-section section-spacing">
+  <div class="bt-container">
+    {%- unless section.settings.title == blank -%}
+    <div class="section__title-wrapper">
+      <h2 class="section__title">{{ section.settings.title | escape }}</h2>
+    </div>
+    {%- endunless -%} 
+        
+      
+      <div class="feature-blog__list" id="latest_blog">
+        {% assign all_articles = false %}
+        {% for link in linklists.home-blogs.links %}
+          {% if all_articles %}
+            {% assign all_articles =  all_articles | concat:blogs[link.handle].articles %}
+          {% else %}
+            {% assign all_articles = blogs[link.handle].articles %}
+          {% endif %}
+        {% endfor %}
+        {% assign all_articles = all_articles | sort: 'published_at' | reverse %}
+        {% for article in all_articles limit:6 %}
+          <div>
+            <a href="{{ article.url }}">
+              <figure>
+                <img src="{{ article.image | img_url: '308x' }}" alt="">
+              </figure>
+            </a>
+          </div>
+        {% endfor %}
+      </div>
+    
+      <script>   
+        
+        // let all_blogs = [];         
+        //   {% for link in linklists.home-blogs.links %}
+        //     {% assign all_articles = blogs[link.handle].articles %}
+        //     {% assign latest_articles = all_articles | sort: 'published_at' | slice: 0, 6 %}
+        //     console.log(`{{latest_articles}}`)
+        //     {% for article in latest_articles limit:6 %}
+        //       all_blogs.push({
+        //         title:"{{article.title}}",
+        //         image:"{{ article.image | img_url: '308x'}}",
+        //         link:"{{ article.url }}",
+        //         published_at_date: '{{article.published_at | date}}',
+        //         published_at_s:"{{ article.published_at | date : "%s" }}"})
+        //     {% endfor %}
+        //   {% endfor %}
+        // let new_art = [];
+        // for(let art of all_blogs){
+        //   if(art.published_at_s){
+        //     art.published_at_s = Number(art.published_at_s)
+        //     new_art.push(art)
+        //   }
+        // }
+        // new_art.sort(function(a, b){return b.published_at_s - a.published_at_s});
+        
+        // let letest_blog = document.querySelector('#latest_blog');
+        // for (let i=0;i<6;i++){
+        //   let new_div = document.createElement("div");
+        //   new_div.class = 'feature-blog__list-item';
+        //   let new_div_n = document.createElement("div");
+        //   new_div_n.class = 'feature-blog__image';
+        //   new_div.append(new_div_n);
+        //   let new_a = document.createElement("a");
+        //   new_a.href = new_art[i].link
+        //   new_div_n.append(new_a);
+        //   let new_figure = document.createElement("figure");
+        //   new_a.append(new_figure);
+        //   let new_img = document.createElement("img");
+        //   new_img.src = new_art[i].image;
+        //   new_img.alt = new_art[i].title;
+        //   new_figure.append(new_img);
+        //   console.log({letest_blog})
+        //   letest_blog.append(new_div);
+        // }
+      </script>
+      
+    {%- if section.settings.show_view_all == true -%}
+    <div class="right">
+      <a class="redirect_link" href="{{section.settings.blog_url}}">More From {{ section.settings.title | escape }} 
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14.61 12.54" width="18" height="16">
+          <g fill="none" stroke="Currentcolor" stroke-miterlimit="10" aria-hidden=""><path d="M13.08 6.34H0"></path>
+            <path d="M8.33.34l5.6 6-5.6 5.86"></path></g></svg>
+      </a>
+    </div>
+    {%- endif -%}
+    
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Feature Blog",
+  "class": "brand-section",
+  "tag" : "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Add Title"
+    },
+    {
+      "type": "url",
+      "id": "blog_url",
+      "label": "Add Link"
+    },
+	{
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default" : false,
+      "label": "Show View All"
+    }
+  ],
+  "presets" : [
+	{"name" : "Feature Blog"}
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

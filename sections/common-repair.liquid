@@ -1,0 +1,128 @@
+<style>
+.common-heading h2,.common-heading h2 a {
+  text-align: center;
+  font-size: 36px;
+  margin-bottom: 0;
+  font-family: Oswald;
+  color: #0c1869;
+  margin-top: 0;
+}
+.common-main {
+  padding-top: 30px;
+}
+.common-description p {
+  text-align: center;
+  font-size: 35px;
+  line-height: 1.4;
+}
+@media only screen and (max-width: 1360px) {
+  .common-description p {
+    font-size: 25px;
+  }
+  .common-heading h2, .common-heading h2 a {
+    font-size: 30px;
+  }
+}
+@media only screen and (max-width: 1199px) {
+  .common-description p {
+    font-size: 20px;
+    padding-bottom: 10px;
+  }
+}
+@media only screen and (max-width: 992px) {
+  .common-description p {
+    font-size: 18px;
+  }
+}
+@media only screen and (max-width: 767px) {
+  .common-main {
+    padding-top: 20px;
+  }
+  .common-heading h2, .common-heading h2 a {
+    font-size: 28px;
+  }
+}
+@media only screen and (max-width: 575px) {
+  .common-description p {
+    font-size: 17px;
+  }
+  .common-heading h2 p {
+    margin-top: 15px;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .common-heading h2, .common-heading h2 a {
+    font-size: 26px;
+  }
+  .common-description p {
+    font-size: 16px;
+  }
+}
+</style>
+<div class="schedule-main common-main">
+  <div class="bt-container">
+    <div class="common-heading">
+      <h2>{{ section.settings.heading }}</h2>
+      <div class="common-description">
+        {{ section.settings.subtext }}
+      </div>
+    </div>
+    {% for block in section.blocks %}
+    <div class="schedule-text">
+      <div class="schedule-heading">
+        {% if block.settings.heading_block != blank %}
+          <h2>
+            {{ block.settings.heading_block }}
+          </h2>
+        {% endif %}
+      </div>
+      <div class="schedule-lists">
+        {% if block.settings.list != blank %}
+          {{ block.settings.list }}
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Common Repair",
+    "settings": [
+      {
+        "type":"richtext",
+        "id":"heading",
+        "label":"Heading"
+      },
+      {
+        "type":"richtext",
+        "id":"subtext",
+        "label":"Sub Text"
+      }
+    ],
+    "blocks":[
+      {
+        "type":"list_block",
+        "name":"List",
+        "settings":[
+          {
+            "type":"richtext",
+            "id":"heading_block",
+            "label":"Heading"
+          },
+          {
+            "type":"richtext",
+            "id":"list",
+            "label":"Schedule List Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

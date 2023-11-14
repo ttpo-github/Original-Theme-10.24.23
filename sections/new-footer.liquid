@@ -1,0 +1,282 @@
+
+<footer>
+  <div class="main-footer">
+    <div class="bt-container">
+      <div class="footer-grid">
+        <div class="footer-grid__item logo-grid">
+          <figure><a href="{{ routes.root_url }}"><img alt="{{ section.settings.footer_logo.logo.alt | default: shop.name | escape }}" src="{{section.settings.footer_logo | img_url : 'master' }}" alt=""/></a></figure>
+          {%- if section.settings.footer_logo_title != blank -%} <h3>{{ section.settings.footer_logo_title }}</h3>{%- endif -%}
+          {%- if section.settings.footer_logo_text != blank -%} <p>{{ section.settings.footer_logo_text }}</p>{%- endif -%}
+          <ul>
+            {% if section.settings.footer_address != blank %}<li>{% render 'footer-location-icon' %}<span>{{ section.settings.footer_address }}</span></li>{% endif %}
+            {% if section.settings.footer_phone != blank %}<li>{% render 'footer-phone-icon' %}<a href="tel:{{section.settings.footer_phone | replace : "(", "" | replace : ")", "" | replace : " ", "" | replace : "-", "" }}">{{ section.settings.footer_phone}}</a></li>{% endif %}
+            {% if section.settings.footer_mail != blank %}<li>{% render 'footer-mail-icon' %}<a href="mailto:{{section.settings.footer_mail}}">{{ section.settings.footer_mail}}</a></li>{% endif %}
+          </ul>
+        </div>
+        <div class="footer-grid__item menu-grid">
+          <h4>{{ section.settings.menu1.title }}</h4>
+          <ul class="footer-block__details-content list-unstyled">
+            {%- for link in section.settings.menu1.links -%}
+            <li>
+              <a href="{{ link.url }}" class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}">
+                {{ link.title }}
+              </a>
+            </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="footer-grid__item menu-grid">
+          <h4>{{ section.settings.menu2.title }}</h4>
+          <ul class="footer-block__details-content list-unstyled">
+            {%- for link in section.settings.menu2.links -%}
+            <li>
+              <a href="{{ link.url }}" class="link link--text list-menu__item list-menu__item--link{% if link.active %} list-menu__item--active{% endif %}">
+                {{ link.title }}
+              </a>
+            </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="footer-grid__item insta-grid">
+          <h4>INSTAGRAM</h4>
+          <div id="insta-feed"></div>
+          {% if page.handle == 'instagram-feed' %} 
+          <script>
+            setTimeout(function() {
+            var instaHTML = $('.rte #insta-feed').html();
+            console.log(instaHTML);	
+            $('.insta-grid #insta-feed').html(instaHTML);
+            }, 2000);
+          </script>
+          {% endif %}
+        </div>
+      </div>
+      <div class="award-section">
+      	{% for block in section.blocks %}
+        <span>
+          <img src="{{ block.settings.award_image | img_url: '300x' }}"
+               data-src="{{ img_url }}"
+               data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+               data-aspectratio="{{ block.settings.award_image.aspect_ratio }}"
+               data-sizes="auto"
+               alt="{{ block.settings.award_image.alt | escape }}"></span>
+        {% endfor %}
+      </div>
+      <div class="footer-social">
+        <div class="footer-search">
+          <h5>SEARCH PRODUCTS</h5>
+          {%- if settings.predictive_search_enabled -%}
+          <predictive-search class="search-modal__form" data-loading-text="{{ 'accessibility.loading' | t }}">
+            {%- endif -%}
+            <form action="{{ routes.search_url }}" method="get" role="search" class="search search-modal__form">
+              <div class="field">
+                <input class="search__input field__input"
+                       id="Search-In-Modal-1"
+                       type="search"
+                       name="q"
+                       value=""
+                       placeholder="Enter keywords to search..."
+                       {%- if settings.predictive_search_enabled -%}
+                       role="combobox"
+                       aria-expanded="false"
+                       aria-owns="predictive-search-results-list"
+                       aria-controls="predictive-search-results-list"
+                       aria-haspopup="listbox"
+                       aria-autocomplete="list"
+                       autocorrect="off"
+                       autocomplete="off"
+                       autocapitalize="off"
+                       spellcheck="false"
+                       {%- endif -%}
+                       >
+                <input type="hidden" name="options[prefix]" value="last">
+                <button class="search__button field__button" aria-label="{{ 'general.search.search' | t }}">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19.7422 18.5595L14.7883 13.6015C15.9604 12.1639 16.6669 10.3343 16.6669 8.3372C16.6669 3.74267 12.93 0.00170898 8.33141 0.00170898C3.7328 0.00170898 0 3.74267 0 8.3372C0 12.9317 3.73688 16.6686 8.33549 16.6686C10.3285 16.6686 12.1622 15.9621 13.5998 14.79L18.5537 19.7439C18.8927 20.0829 19.4073 20.0829 19.7463 19.7439C20.0852 19.4049 20.0852 18.8985 19.7422 18.5595ZM1.6622 8.3372C1.6622 4.6575 4.6517 1.66799 8.33141 1.66799C12.0111 1.66799 15.0047 4.66158 15.0047 8.34129C15.0047 12.021 12.0111 15.0146 8.33141 15.0146C4.6517 15.0146 1.6622 12.0169 1.6622 8.3372Z"/>
+                  </svg>
+                </button>
+              </div>
+
+              {%- if settings.predictive_search_enabled -%}
+              <div class="predictive-search predictive-search--header" tabindex="-1" data-predictive-search>
+                <div class="predictive-search__loading-state">
+                  <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                  </svg>
+                </div>
+              </div>
+
+              <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+              {%- endif -%}
+            </form>
+            {%- if settings.predictive_search_enabled -%}
+          </predictive-search>
+          {%- endif -%}
+        </div>
+        
+        <div class="footer-social-wrap">
+          <h5>FOLLOW US</h5>
+          {%- if section.settings.show_social -%}
+          <ul class="footer__list-social list-unstyled list-social" role="list">
+            {%- if settings.social_facebook_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_facebook_link }}" class="link list-social__link" >
+                {%- render 'icon-facebook' -%}
+                <span class="visually-hidden">{{ 'general.social.links.facebook' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_twitter_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_twitter_link }}" class="link list-social__link" >
+                {%- render 'icon-twitter' -%}
+                <span class="visually-hidden">{{ 'general.social.links.twitter' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_pinterest_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_pinterest_link }}" class="link list-social__link" >
+                {%- render 'icon-pinterest' -%}
+                <span class="visually-hidden">{{ 'general.social.links.pinterest' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_instagram_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_instagram_link }}" class="link list-social__link" >
+                {%- render 'icon-instagram' -%}
+                <span class="visually-hidden">{{ 'general.social.links.instagram' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_tiktok_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_tiktok_link }}" class="link list-social__link" >
+                {%- render 'icon-tiktok' -%}
+                <span class="visually-hidden">{{ 'general.social.links.tiktok' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_tumblr_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_tumblr_link }}" class="link list-social__link" >
+                {%- render 'icon-tumblr' -%}
+                <span class="visually-hidden">{{ 'general.social.links.tumblr' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_snapchat_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_snapchat_link }}" class="link list-social__link" >
+                {%- render 'icon-snapchat' -%}
+                <span class="visually-hidden">{{ 'general.social.links.snapchat' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_youtube_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_youtube_link }}" class="link list-social__link" >
+                {%- render 'icon-youtube' -%}
+                <span class="visually-hidden">{{ 'general.social.links.youtube' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+            {%- if settings.social_vimeo_link != blank -%}
+            <li class="list-social__item">
+              <a href="{{ settings.social_vimeo_link }}" class="link list-social__link" >
+                {%- render 'icon-vimeo' -%}
+                <span class="visually-hidden">{{ 'general.social.links.vimeo' | t }}</span>
+              </a>
+            </li>
+            {%- endif -%}
+          </ul>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="bt-container">
+      <div class="footer__copyright">
+        &copy; {{ 'now' | date: "%Y" }}. {{ shop.name | link_to: routes.root_url }} All Rights Reserved.
+      </div>
+    </div>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+	{
+      "type": "image_picker",
+      "id": "footer_logo",
+      "label": "select Footer Logo"
+    },
+	{
+      "type": "text",
+      "id": "footer_logo_title",
+      "label": "Add Footer Logo Title"
+    },
+	{
+      "type": "textarea",
+      "id": "footer_logo_text",
+      "label": "Add Footer Logo Text"
+    },
+	{
+      "type": "textarea",
+      "id": "footer_address",
+      "label": "Add address"
+    },
+	{
+      "type": "text",
+      "id": "footer_phone",
+      "label": "Add Phone Number"
+    },
+	{
+      "type": "text",
+      "id": "footer_mail",
+      "label": "Add Mail Id"
+    },
+    {
+      "type": "link_list",
+      "id": "menu1",
+      "default": "footer",
+      "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+      "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+    },
+	{
+      "type": "link_list",
+      "id": "menu2",
+      "default": "footer",
+      "label": "t:sections.footer.blocks.link_list.settings.menu.label",
+      "info": "t:sections.footer.blocks.link_list.settings.menu.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "t:sections.footer.settings.show_social.label"
+    }
+  ],
+  "blocks": [
+	{
+      "type": "image_picker",
+      "name" : "Award Image",
+      "settings" : [
+        {
+          "type" : "image_picker",
+          "id" : "award_image",
+          "label" : "Select Award Image"
+      	}
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

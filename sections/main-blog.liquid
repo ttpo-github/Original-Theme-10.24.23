@@ -1,0 +1,328 @@
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% comment %}get all article{% endcomment %}
+{% assign allarticle = null | compact %}
+{% for link in linklists[section.settings.filter_list].links %}
+  {% assign title = link.url | replace: "/blogs/","" %}
+  {% for article in blogs[title].articles %}
+   {% assign article_array = article | compact %}
+   {% assign allarticle = allarticle | concat: article_array | sort: 'published_at' | reverse %}                   
+  {% endfor %}
+{% endfor %}
+
+{%- paginate blog.articles by 9 -%}
+  <div class="main-blog bt-container section-{{ section.id }}-padding">
+    <h1 class="section__title">Blogs & Helpful Articles</h1>
+    <div class="blog-filter">
+      <a href="#all?blog=all" class="custom-btn all-tab">All</a>
+      {% for link in linklists[section.settings.filter_list].links %}
+        <a href="{{ link.url }}" class="custom-btn">{{ link.title }}</a>
+      {% endfor %}
+    </div>
+    <div class="all blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}" style="display:none">
+      {% for customarticle in allarticle  %}
+        <div class="blog-articles__article article">
+          {%- render 'article-card',
+            article: customarticle,
+            media_height: section.settings.image_height,
+            media_aspect_ratio: customarticle.image.aspect_ratio,
+            show_image: section.settings.show_image,
+            show_date: section.settings.show_date,
+            show_author: section.settings.show_author,
+            show_excerpt: true 
+          -%}
+        </div>
+      {% endfor %}
+    </div>
+    <div class="custom-navigation" style="display:none">
+     <nav class="pagination-container">
+        <button class="pagination-button" id="prev-button" aria-label="Previous page" title="Previous page">
+         <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+          </path></svg>
+        </button>
+        <div id="pagination-numbers">
+        </div>
+        <button class="pagination-button" id="next-button" aria-label="Next page" title="Next page">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-caret" viewBox="0 0 10 6">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M9.354.646a.5.5 0 00-.708 0L5 4.293 1.354.646a.5.5 0 00-.708.708l4 4a.5.5 0 00.708 0l4-4a.5.5 0 000-.708z" fill="currentColor">
+        </path></svg>
+        </button>
+      </nav>
+    </div>
+    <div class=" blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}" >
+      {%- for article in blog.articles -%}
+        <div class="blog-articles__article article">
+          {%- render 'article-card',
+            article: article,
+            media_height: section.settings.image_height,
+            media_aspect_ratio: article.image.aspect_ratio,
+            show_image: section.settings.show_image,
+            show_date: section.settings.show_date,
+            show_author: section.settings.show_author,
+            show_excerpt: true 
+          -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if paginate.pages > 1 -%}
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </div>
+{%- endpaginate -%}
+<script>
+let allbtn = document.querySelector('.blog-filter .custom-btn.all-tab');
+if(document.querySelector('a[href="'+location.pathname+'"]') != null){
+  document.querySelectorAll('.custom-btn').forEach(bt=>{ bt.classList.remove('active') });
+  document.querySelector('a[href="'+location.pathname+'"]').classList.add('active')
+}
+if(location.hash == "#all?blog=all"){
+  document.querySelectorAll('.custom-btn').forEach(bt=>{ bt.classList.remove('active') });
+  document.querySelector('.blog-filter .custom-btn.all-tab').classList.add('active')
+   document.querySelectorAll('.main-blog .blog-articles').forEach(article=>{ article.style.display = "none" });
+  document.querySelector(".custom-navigation").style.display = "block";
+   document.querySelector(".all").style.display = "grid";
+  if( document.querySelector(".pagination-wrapper") != null){
+   document.querySelector(".pagination-wrapper").style.display = "none";}
+   
+}
+allbtn.onclick = function(){
+  window.hash = "?blog=all";
+  document.querySelectorAll('.custom-btn:not(.all-tab)').forEach(bt=>{ bt.classList.remove('active') });
+  this.classList.add('active')
+  document.querySelectorAll('.main-blog .blog-articles').forEach(article=>{ article.style.display = "none" });
+  document.querySelector(".custom-navigation").style.display = "block";
+  document.querySelector(".all").style.display = "grid";
+  if( document.querySelector(".pagination-wrapper") != null){
+    document.querySelector(".pagination-wrapper").style.display = "none";
+  }
+} 
+document.querySelectorAll('.custom-btn:not(.all-tab)').forEach(bt=>{
+  bt.onclick = function(){
+    window.hash = "";
+  }
+});
+
+// pagination js
+const paginationNumbers = document.getElementById("pagination-numbers");
+const paginatedList = document.querySelector(".all");
+const listItems = paginatedList.querySelectorAll(".blog-articles__article.article");
+const nextButton = document.getElementById("next-button");
+const prevButton = document.getElementById("prev-button");
+
+const paginationLimit = 9;
+const pageCount = Math.ceil(listItems.length / paginationLimit);
+let currentPage = 1;
+
+const disableButton = (button) => {
+  button.classList.add("disabled");
+  button.setAttribute("disabled", true);
+};
+
+const enableButton = (button) => {
+  button.classList.remove("disabled");
+  button.removeAttribute("disabled");
+};
+
+const handlePageButtonsStatus = () => {
+  if (currentPage === 1) {
+    disableButton(prevButton);
+  } else {
+    enableButton(prevButton);
+  }
+
+  if (pageCount === currentPage) {
+    disableButton(nextButton);
+  } else {
+    enableButton(nextButton);
+  }
+};
+
+const handleActivePageNumber = () => {
+  document.querySelectorAll(".pagination-number").forEach((button) => {
+    button.classList.remove("active");
+    const pageIndex = Number(button.getAttribute("page-index"));
+    if (pageIndex == currentPage) {
+      button.classList.add("active");
+    }
+  });
+};
+
+const appendPageNumber = (index) => {
+  const pageNumber = document.createElement("button");
+  pageNumber.className = "pagination-number";
+  pageNumber.innerHTML = index;
+  pageNumber.setAttribute("page-index", index);
+  pageNumber.setAttribute("aria-label", "Page " + index);
+
+  paginationNumbers.appendChild(pageNumber);
+};
+
+const getPaginationNumbers = () => {
+  for (let i = 1; i <= pageCount; i++) {
+    appendPageNumber(i);
+  }
+};
+
+const setCurrentPage = (pageNum) => {
+  currentPage = pageNum;
+
+  handleActivePageNumber();
+  handlePageButtonsStatus();
+  
+  const prevRange = (pageNum - 1) * paginationLimit;
+  const currRange = pageNum * paginationLimit;
+
+  listItems.forEach((item, index) => {
+    item.classList.add("hidden");
+    if (index >= prevRange && index < currRange) {
+      item.classList.remove("hidden");
+    }
+  });
+};
+
+window.addEventListener("load", () => {
+  getPaginationNumbers();
+  setCurrentPage(1);
+
+  prevButton.addEventListener("click", () => {
+    setCurrentPage(currentPage - 1);
+  });
+
+  nextButton.addEventListener("click", () => {
+    setCurrentPage(currentPage + 1);
+  });
+
+  document.querySelectorAll(".pagination-number").forEach((button) => {
+    const pageIndex = Number(button.getAttribute("page-index"));
+
+    if (pageIndex) {
+      button.addEventListener("click", () => {
+        setCurrentPage(pageIndex);
+      });
+    }
+  });
+});
+</script>
+{% schema %}
+{
+  "name": "t:sections.main-blog.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.main-blog.settings.header.content"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:sections.main-blog.settings.layout.options__1.label"
+        },
+        {
+          "value": "collage",
+          "label": "t:sections.main-blog.settings.layout.options__2.label"
+        }
+      ],
+      "default": "collage",
+      "label": "t:sections.main-blog.settings.layout.label",
+      "info": "t:sections.main-blog.settings.layout.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_image.label"
+    },
+    {
+      "type":"link_list",
+      "id":"filter_list",
+      "label":"Select Filter Menu"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.main-blog.settings.image_height.options__1.label"
+        },
+        {
+          "value": "small",
+          "label": "t:sections.main-blog.settings.image_height.options__2.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.main-blog.settings.image_height.options__3.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.main-blog.settings.image_height.options__4.label"
+        }
+      ],
+      "default": "medium",
+      "label": "t:sections.main-blog.settings.image_height.label",
+      "info": "t:sections.main-blog.settings.image_height.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "t:sections.main-blog.settings.show_date.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "t:sections.main-blog.settings.show_author.label"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.main-blog.settings.paragraph.content"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}
